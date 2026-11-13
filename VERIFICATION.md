@@ -1,5 +1,33 @@
 # Vérifications exécutées
 
+## Mise à jour QA finale — 13 novembre 2026
+
+Les résultats historiques du 12 novembre ci-dessous sont conservés comme trace de la première version. La définition du compteur a changé : le jeu initial compte désormais **8 dossiers, 5 revues spécifiques, 2 en attente client et 1 résolu**. Les anciennes captures à sept revues décrivent uniquement la version initiale.
+
+Contrôles exécutés après les correctifs :
+
+- `npm test` : **57 tests réussis dans 3 fichiers**, comprenant les scénarios antérieurs et 20 tests QA supplémentaires. Les attentes des deux tests de compteur et du test multi-intentions ont été adaptées au comportement demandé ; aucun scénario antérieur n’a été supprimé.
+- `npm run build` : **réussi**, avec validation TypeScript stricte puis production Vite. Bundle observé : environ 265 kB de JavaScript / 83 kB gzip et 25 kB de CSS / 6 kB gzip.
+- Le premier passage de QA a révélé une erreur de type sur le repli « À vérifier » et une attente de test portant sur le second signal qualité au lieu du premier signal réellement expliqué. Ces deux problèmes ont été corrigés avant la réussite complète.
+
+Parcours de navigateur exécutés sur le serveur local :
+
+1. Vérification du compteur initial **5**, distinct des sept dossiers non résolus ; le dossier qualité courant et la demande de remplacement complète sont exclus.
+2. Création du message exact du brief : vase cassé, vitres sales et compensation. Titre « Vase endommagé et ménage insatisfaisant », dommage principal, qualité secondaire, deux recommandations distinctes, photos attendues et décision financière humaine. Les compteurs passent à neuf dossiers et six revues spécifiques.
+3. Rechargement sans réinitialisation : le nouveau dossier et son titre restent présents. Filtre Qualité du ménage : le dossier apparaît grâce au sujet secondaire.
+4. Tentative de résolution sans revue / approbation : refus explicite. Édition du brouillon puis confirmation de revue : le compteur passe de six à cinq.
+5. Approbation locale et statut En attente client, puis rechargement : titre, message original, texte édité, approbation, revue, statut et historique conservés. Passage à Résolu : neuf dossiers, cinq revues spécifiques, deux en attente client et deux résolus.
+6. Ouverture de la file Revue spécifique : cinq lignes correspondant aux cinq dossiers attendus, calculées par la même fonction que la carte.
+7. Inspection visuelle du détail multi-sujets sur ordinateur et à 390 × 844. Pas de débordement horizontal constaté sur le détail (document 375 px pour viewport 390 px avec barre de défilement). Le viewport temporaire a été réinitialisé. Aucun avertissement ni erreur dans la console inspectée.
+
+Les sauvegardes anciennes sans nouveaux champs sont couvertes par trois tests de compatibilité : huit dossiers rechargés à l’identique ; anciens titre, brouillon et historique conservés ; nouveau dossier validé conservé après aller-retour JSON. Les informations de triage ajoutées sont calculées à la lecture ; aucune migration destructrice ni modification de clé LocalStorage. Le test de navigateur a ajouté un dossier synthétique et l’a conservé ; aucune réinitialisation n’a été effectuée pour cette mise à jour.
+
+Captures QA : [dossier multi-sujets](./docs/qa-multi-issue.jpg), [file de revue spécifique et compteurs](./docs/qa-review.jpg).
+
+Ces parcours restent des vérifications pilotées par l’agent, pas une revue humaine indépendante ni une suite E2E rejouable. La version Vercel fournie par le brief n’a pas été validée après déploiement dans cette session. Après publication, refaire le scénario mixte et le rechargement sur cette origine, sans vider ses données. Les règles lexicales, les négations, les cas inhabituels et les politiques métier restent à relire par le propriétaire / un responsable. Aucune intégration officielle MarIA n’existe dans ce prototype ; aucun gain opérationnel n’a été mesuré.
+
+## Première version — 12 novembre 2026
+
 Vérifications réalisées par Codex le **12 novembre 2026** dans le projet local. Elles ne constituent pas une validation par le propriétaire ou par MénageSimple.
 
 ## Contrôles automatisés

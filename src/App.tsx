@@ -20,7 +20,7 @@ import {
 import { useCases } from './hooks/useCases';
 import { categories, statuses } from './domain/types';
 import type { Category, CustomerCase, Status } from './domain/types';
-import { metrics } from './domain/cases';
+import { caseCategories, metrics, requiresHumanReview } from './domain/cases';
 import { triage, normalize } from './domain/triage';
 import { seedCases } from './data/syntheticCases';
 import { StatusBadge, UrgencyBadge } from './components/Badge';
@@ -43,13 +43,13 @@ export default function App() {
   const filtered = cases.filter(
     (c) =>
       (!status || c.status === status) &&
-      (!category || (c.override ?? triage(c).category) === category) &&
+      (!category || caseCategories(c).includes(category)) &&
       (!query ||
         normalize(`${c.id} ${c.name} ${c.title} ${c.message} ${c.bookingRef}`).includes(
           normalize(query),
         )) &&
       (view === 'all' ||
-        (view === 'review' && !c.reviewedAt && c.status !== 'Résolu') ||
+        (view === 'review' && requiresHumanReview(c)) ||
         (view === 'waiting' && c.status === 'En attente client') ||
         (view === 'resolved' && c.status === 'Résolu')),
   );
@@ -109,7 +109,7 @@ export default function App() {
             className={view === 'review' && !current ? 'nav-item active' : 'nav-item'}
             onClick={() => navigate('review')}
           >
-            <ClipboardCheck size={18} /> Revue humaine <span>{m.review}</span>
+            <ClipboardCheck size={18} /> Revue spécifique <span>{m.review}</span>
           </button>
           <button
             className={view === 'resolved' && !current ? 'nav-item active' : 'nav-item'}
@@ -266,11 +266,11 @@ export default function App() {
                     note: 'Dans cet espace de démonstration',
                   },
                   {
-                    label: 'À revoir par un humain',
+                    label: 'Revue spécifique requise',
                     value: m.review,
                     icon: ClipboardCheck,
                     key: 'review',
-                    note: 'Dossiers ouverts sans revue confirmée',
+                    note: 'Escalade ou information critique manquante',
                   },
                   {
                     label: 'En attente client',
@@ -306,7 +306,7 @@ export default function App() {
                   <div className="flex items-center gap-3">
                     <h2>
                       {view === 'review'
-                        ? 'Revue humaine'
+                        ? 'Revue spécifique requise'
                         : view === 'waiting'
                           ? 'En attente client'
                           : view === 'resolved'
@@ -400,6 +400,12 @@ export default function App() {
                                   className={`category-mark ${t.category === 'À vérifier' ? 'uncertain' : ''}`}
                                 />
                                 {c.override ?? t.category}
+                                {t.secondaryCategories.length > 0 && (
+                                  <span title={t.secondaryCategories.join(' · ')}>
+                                    + {t.secondaryCategories.length} sujet
+                                    {t.secondaryCategories.length > 1 ? 's' : ''}
+                                  </span>
+                                )}
                                 <span>·</span>
                                 {c.channel}
                               </div>

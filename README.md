@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-Le fichier `package-lock.json` fixe les versions installées. Aucun téléchargement à l’exécution : polices système, icônes embarquées, règles locales. Les liens documentaires s’ouvrent uniquement à la demande de l’opérateur. `dist/` contient le résultat statique du build. Rien n’a été déployé.
+Le fichier `package-lock.json` fixe les versions installées. Aucun téléchargement à l’exécution : polices système, icônes embarquées, règles locales. Les liens documentaires s’ouvrent uniquement à la demande de l’opérateur. `dist/` contient le résultat statique du build. Une version hébergée a été fournie dans le brief QA : https://menagesimple-caseflow.vercel.app/. Les contrôles de cette mise à jour portent sur le code local ; la version effectivement servie après déploiement reste à vérifier.
 
 ## Pourquoi ce prototype ?
 
@@ -45,17 +45,37 @@ Les informations manquantes n’empêchent pas automatiquement une clôture : un
 
 `src/domain/triage.ts` applique des règles lexicales françaises normalisées (accents, casse, espaces). Aucun modèle de langage ne tourne dans l’application.
 
-| Signal                                  | Suite suggérée                                                                | Garde-fou                                                      |
-| --------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Qualité du ménage                       | Préciser les points à reprendre, examiner un passage correctif                | Aucune visite promise                                          |
-| Dommage matériel                        | Évaluation par un responsable, photos à recueillir                            | Escalade obligatoire même en présence d’autres intentions      |
-| Annulation / modification               | Vérifier le préavis indicatif à réception et les conditions publiques de 48 h | Aucuns frais ni droit calculés                                 |
-| Remplacement                            | Confirmer la prestation et les disponibilités                                 | Aucune affectation ni réservation                              |
-| Message inconnu ou intentions multiples | « À vérifier », clarification                                                 | Aucune catégorie forcée ; priorité au dommage s’il est signalé |
+| Signal                          | Suite suggérée                                                                | Garde-fou                                                 |
+| ------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------- |
+| Qualité du ménage               | Préciser les points à reprendre, examiner un passage correctif                | Aucune visite promise                                     |
+| Dommage matériel                | Évaluation par un responsable, photos à recueillir                            | Escalade obligatoire même en présence d’autres intentions |
+| Annulation / modification       | Vérifier le préavis indicatif à réception et les conditions publiques de 48 h | Aucuns frais ni droit calculés                            |
+| Remplacement                    | Confirmer la prestation et les disponibilités                                 | Aucune affectation ni réservation                         |
+| Message sans intention reconnue | « À vérifier », clarification                                                 | Clarification humaine avant décision                      |
 
 Le préavis compare l’horodatage de réception à celui de la prestation, et non à l’horloge actuelle : le jeu fictif reste reproductible. Les dates sont affichées dans le fuseau `Europe/Zurich`. Une date passée ou absente donne un préavis indéterminable. L’urgence n’est pas un engagement de délai de traitement.
 
-Les compteurs sont dérivés des dossiers : total ; ouverts sans revue humaine confirmée ; statut En attente client ; statut Résolu. Les catégories corrigées sont utilisées dans les filtres. L’historique conserve les changements de statut, corrections, revue, approbation et séquences d’édition du brouillon. Ce journal local n’est pas un audit de conformité.
+### Plusieurs sujets, une priorité explicite
+
+Toutes les catégories reconnues sont conservées. La priorité déterministe du prototype est **dommage matériel → annulation / modification → remplacement → qualité du ménage** : protection des biens, vérification contractuelle, continuité de prestation, puis qualité. Cet ordre est une hypothèse du prototype, à valider avec l’entreprise. Il choisit la catégorie principale ; les autres apparaissent séparément comme sujets secondaires. Un message sans signal reconnu reste « À vérifier ».
+
+Chaque sujet conserve son action, ses informations attendues, ses indicateurs et ses références. Par exemple, un vase cassé accompagné de vitres sales déclenche l’évaluation du dommage **et** l’examen d’un éventuel passage correctif. Le brouillon initial et sa régénération traitent les deux sujets. Aucune compensation ni couverture n’est accordée. Une correction de catégorie ne supprime pas les précautions liées aux sujets détectés. Les filtres recherchent aussi les catégories secondaires et la catégorie suggérée initiale.
+
+Les nouveaux dossiers reçoivent un titre français déterministe, par exemple « Vase endommagé et ménage insatisfaisant ». Un objet n’est nommé que si une construction reconnue le relie explicitement au dommage ; sinon le titre reste générique. Le titre présente les deux premiers sujets puis le nombre d’autres sujets éventuels. Le message original est conservé séparément.
+
+### Compteur « Revue spécifique requise »
+
+Les compteurs sont calculés à partir de l’état des dossiers. **Revue spécifique requise** inclut uniquement les dossiers non résolus, sans revue confirmée, avec au moins l’un des motifs suivants :
+
+- Dommage, demande ambiguë, annulation / modification, demande de remboursement, compensation ou assurance nécessitant une décision humaine.
+- Information critique encore non cochée : référence, date / heure, description du dommage, photos, points qualité à préciser ou nature de la demande.
+- Correction opérateur explicite vers « À vérifier ».
+
+Des disponibilités de remplacement à confirmer sont une tâche courante : elles ne suffisent pas à déclencher ce compteur. Un dossier qualité complet, sans demande financière, reste également hors de cette file même s’il est ouvert. **La revue et l’approbation avant résolution restent obligatoires pour tous les dossiers.**
+
+Le compteur et le filtre utilisent la même fonction `requiresHumanReview`. Confirmer une revue retire le dossier de la file ; révoquer la revue ou modifier la checklist / catégorie peut le réintroduire. Compléter les informations critiques suffit pour un dossier courant, mais ne supprime pas une escalade obligatoire liée à un dommage. Le compteur suit les revues restant à effectuer, pas les risques encore ouverts ni les résolutions opérationnelles.
+
+Les autres indicateurs comptent le total et les statuts En attente client et Résolu. L’historique conserve les changements de statut, corrections, revue, approbation et séquences d’édition du brouillon. Ce journal local n’est pas un audit de conformité.
 
 ## Architecture et périmètre
 
@@ -72,6 +92,8 @@ src/
 React 19, TypeScript strict, Vite 7, Tailwind CSS 4, Vitest 4. Lucide fournit uniquement les icônes. Pas de routeur, backend, authentification, base de données, analytics, service payant ou intégration externe. Les noms abrégés, messages, villes associées aux personnes et références `DEMO-…` sont inventés ; ils ne représentent aucun client réel.
 
 Persistance sous `caseflow.demo.v1`. Une sauvegarde JSON invalide restaure les huit dossiers avec un avertissement. Un stockage bloqué ou plein laisse l’application utilisable en mémoire et affiche une alerte. « Réinitialiser la démo » demande confirmation avant de remplacer les modifications locales.
+
+**Compatibilité avec les anciennes sauvegardes :** les sujets secondaires, actions et motifs de revue sont recalculés depuis les champs déjà présents. Aucun nouveau champ persistant ni changement de clé n’est requis. Les anciens dossiers conservent leur titre, leur brouillon, leurs validations et leur historique : aucune réinitialisation ni suppression pour cette mise à jour. Les nouveaux titres s’appliquent aux nouvelles créations uniquement. Un ancien brouillon reste inchangé jusqu’à une régénération explicitement confirmée.
 
 ## Sources et niveau de vérification
 
@@ -127,4 +149,4 @@ Aucun pilote, résultat client ou gain mesuré n’est revendiqué.
 | 1:55–2:20 | Simuler : « La cliente demande à être rappelée au sujet de son dernier passage. » Montrer « À vérifier », référence/date manquantes et clarification. Aucun appel réel.                                       |
 | 2:20–2:45 | Montrer le résultat des tests et la commande de build. Conclure par les quatre mesures du plan de validation, sans annoncer de gain.                                                                          |
 
-Réinitialiser avant la présentation pour retrouver les indicateurs initiaux : **8 dossiers, 7 à revoir, 2 en attente client, 1 résolu**.
+Les indicateurs du jeu initial sont désormais **8 dossiers, 5 en revue spécifique, 2 en attente client, 1 résolu**. Utiliser un profil de démonstration séparé pour présenter ce jeu initial ; ne pas effacer des dossiers existants pour mettre à jour l’application.

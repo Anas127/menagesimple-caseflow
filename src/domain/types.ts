@@ -35,6 +35,10 @@ export interface CustomerCase {
 }
 export interface Triage {
   category: Category;
+  secondaryCategories: Category[];
+  actions: { category: Category; text: string }[];
+  reviewReasons: string[];
+  criticalMissing: string[];
   explanation: string;
   signals: string[];
   urgency: 'Prioritaire' | 'À examiner' | 'Normale';

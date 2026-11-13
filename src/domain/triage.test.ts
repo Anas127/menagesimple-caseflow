@@ -39,8 +39,11 @@ describe('triage explicable et prudent', () => {
     expect(t.escalation).toBe(true);
     expect(t.explanation).toContain('incertaine');
   });
-  it('laisse les intentions multiples à la vérification humaine', () => {
-    expect(triage(input('Le sol est sale et je souhaite annuler.')).category).toBe('À vérifier');
+  it('conserve les intentions multiples avec priorité contractuelle et revue humaine', () => {
+    const t = triage(input('Le sol est sale et je souhaite annuler.'));
+    expect(t.category).toBe('Annulation / modification');
+    expect(t.secondaryCategories).toEqual(['Qualité du ménage']);
+    expect(t.escalation).toBe(true);
   });
   it('signale le préavis sous 48 h sans décider de frais', () => {
     const t = triage(input('Je dois annuler le passage.'));

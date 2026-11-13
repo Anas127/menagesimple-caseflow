@@ -17,6 +17,7 @@ import {
   addActivity,
   approveDraft,
   changeStatus,
+  humanReviewReasons,
   overrideCategory,
   saveDraft,
 } from '../domain/cases';
@@ -108,8 +109,20 @@ export function CaseDetail({
               <span className="tag">Règles déterministes</span>
             </div>
             <div className="triage-result">
-              <span className="small muted">Catégorie suggérée</span>
+              <span className="small muted">Catégorie principale suggérée</span>
               <h2>{t.category}</h2>
+              {t.secondaryCategories.length > 0 && (
+                <div className="mt-3">
+                  <span className="small muted">Sujets secondaires détectés</span>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {t.secondaryCategories.map((issue) => (
+                      <li className="tag" key={issue}>
+                        {issue}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <p>{t.explanation}</p>
             </div>
             {c.override && (
@@ -178,8 +191,12 @@ export function CaseDetail({
               </p>
             )}
             <div className="action-note">
-              <span className="eyebrow">PROCHAINE ÉTAPE PROPOSÉE</span>
-              <p>{t.nextStep}</p>
+              <span className="eyebrow">ACTIONS PROPOSÉES PAR SUJET</span>
+              {t.actions.map((action) => (
+                <p key={action.category}>
+                  <strong>{action.category} :</strong> {action.text}
+                </p>
+              ))}
               {c.override && c.override !== t.category && (
                 <p>
                   <strong>Lecture opérateur :</strong> {recommendations[c.override]} Les précautions
@@ -188,9 +205,11 @@ export function CaseDetail({
               )}
               <span className="small">
                 <ShieldCheck size={14} />{' '}
-                {t.escalation
-                  ? 'Examen humain requis'
-                  : 'Validation opérateur requise avant résolution'}
+                {c.reviewedAt
+                  ? 'Revue humaine confirmée'
+                  : humanReviewReasons(c).length > 0
+                    ? 'Revue spécifique requise'
+                    : 'Validation opérateur requise avant résolution'}
               </span>
             </div>
             <h3 className="mt-5">
@@ -292,6 +311,10 @@ export function CaseDetail({
                             c,
                             category,
                             t.missing.filter((s) => !c.completedInfo.includes(s)),
+                            [
+                              ...t.secondaryCategories,
+                              ...(c.override && c.override !== t.category ? [t.category] : []),
+                            ],
                           ),
                         ),
                       );
@@ -323,6 +346,19 @@ export function CaseDetail({
                 <option key={s}>{s}</option>
               ))}
             </select>
+            {humanReviewReasons(c).length > 0 && (
+              <div className="mt-4">
+                <h3>Motifs de revue spécifique</h3>
+                <ul className="signal-list">
+                  {humanReviewReasons(c).map((reason) => (
+                    <li key={reason}>
+                      <Info size={14} />
+                      {reason}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <label className="review-check">
               <input
                 type="checkbox"

@@ -2,6 +2,7 @@ import { categories, statuses } from './types';
 import type { Category, CustomerCase, Status } from './types';
 import { normalize, triage } from './triage';
 import { createDraft } from './recommendations';
+import { generateTitle } from './titles';
 export const STORAGE_KEY = 'caseflow.demo.v1';
 export function newCase(
   message: string,
@@ -12,7 +13,7 @@ export function newCase(
     id,
     name: 'Client de démonstration',
     city: 'À préciser',
-    title: message.trim().slice(0, 75),
+    title: '',
     message: message.trim(),
     channel: 'Simulation MarIA',
     bookingRef: '',
@@ -26,7 +27,11 @@ export function newCase(
     ],
   };
   const t = triage(c);
-  return { ...c, draft: createDraft(c, t.category, t.missing) };
+  return {
+    ...c,
+    title: generateTitle(c.message, t),
+    draft: createDraft(c, t.category, t.missing, t.secondaryCategories),
+  };
 }
 export function isDuplicate(cases: CustomerCase[], message: string): boolean {
   return cases.some((c) => normalize(c.message) === normalize(message));
@@ -89,10 +94,30 @@ export function overrideCategory(
     `Catégorie corrigée : ${category}. Motif : ${reason.trim()}`,
   );
 }
+export function humanReviewReasons(c: CustomerCase): string[] {
+  if (c.status === 'Résolu' || c.reviewedAt) return [];
+  const t = triage(c);
+  return [
+    ...t.reviewReasons,
+    ...t.criticalMissing
+      .filter((s) => !c.completedInfo.includes(s))
+      .map((s) => `Information critique manquante : ${s}`),
+    ...(c.override === 'À vérifier' && t.category !== 'À vérifier'
+      ? ['Catégorie opérateur à vérifier']
+      : []),
+  ];
+}
+export function requiresHumanReview(c: CustomerCase): boolean {
+  return humanReviewReasons(c).length > 0;
+}
+export function caseCategories(c: CustomerCase): Category[] {
+  const t = triage(c);
+  return [...new Set([c.override ?? t.category, t.category, ...t.secondaryCategories])];
+}
 export function metrics(cases: CustomerCase[]) {
   return {
     total: cases.length,
-    review: cases.filter((c) => c.status !== 'Résolu' && !c.reviewedAt).length,
+    review: cases.filter(requiresHumanReview).length,
     waiting: cases.filter((c) => c.status === 'En attente client').length,
     resolved: cases.filter((c) => c.status === 'Résolu').length,
   };

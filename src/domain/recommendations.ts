@@ -15,6 +15,7 @@ export function createDraft(
   c: Pick<CustomerCase, 'name'>,
   category: Category,
   missing: string[],
+  secondaryCategories: Category[] = [],
 ): string {
   const intro =
     c.name === 'Client de démonstration' ? 'Bonjour,' : `Bonjour ${c.name.split(' ')[0]},`;
@@ -30,5 +31,6 @@ export function createDraft(
     'À vérifier':
       'Merci pour votre message. Pourriez-vous préciser ce qui s’est passé et ce que vous souhaitez concernant votre prestation ?',
   };
-  return `${intro}\n\n${body[category]}${missing.length ? `\n\nPour compléter le dossier, pourriez-vous nous transmettre : ${missing.map((s) => s.toLocaleLowerCase('fr')).join(' ; ')} ?` : ''}\n\nMerci pour votre aide,\nL’équipe de suivi`;
+  const issues = [...new Set([category, ...secondaryCategories])];
+  return `${intro}\n\n${issues.map((issue) => body[issue]).join('\n\n')}${missing.length ? `\n\nPour compléter le dossier, pourriez-vous nous transmettre : ${missing.map((s) => s.toLocaleLowerCase('fr')).join(' ; ')} ?` : ''}\n\nMerci pour votre aide,\nL’équipe de suivi`;
 }

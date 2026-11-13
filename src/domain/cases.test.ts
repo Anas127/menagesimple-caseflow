@@ -15,7 +15,7 @@ describe('cycle de vie et sauvegarde de démonstration', () => {
     const cases = seedCases();
     expect(cases).toHaveLength(8);
     expect(new Set(cases.map((c) => c.id)).size).toBe(8);
-    expect(metrics(cases)).toEqual({ total: 8, review: 7, waiting: 2, resolved: 1 });
+    expect(metrics(cases)).toEqual({ total: 8, review: 5, waiting: 2, resolved: 1 });
   });
   it('permet les statuts ouverts sans approuver implicitement une réponse', () => {
     const c = changeStatus(seedCases()[0], 'En cours');
@@ -36,7 +36,7 @@ describe('cycle de vie et sauvegarde de démonstration', () => {
     expect(resolved.status).toBe('Résolu');
     expect(metrics([resolved, ...cases.slice(1)])).toEqual({
       total: 8,
-      review: 6,
+      review: 5,
       waiting: 2,
       resolved: 2,
     });
