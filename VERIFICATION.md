@@ -24,7 +24,11 @@ Les sauvegardes anciennes sans nouveaux champs sont couvertes par trois tests de
 
 Captures QA : [dossier multi-sujets](./docs/qa-multi-issue.jpg), [file de revue spécifique et compteurs](./docs/qa-review.jpg).
 
-Ces parcours restent des vérifications pilotées par l’agent, pas une revue humaine indépendante ni une suite E2E rejouable. La version Vercel fournie par le brief n’a pas été validée après déploiement dans cette session. Après publication, refaire le scénario mixte et le rechargement sur cette origine, sans vider ses données. Les règles lexicales, les négations, les cas inhabituels et les politiques métier restent à relire par le propriétaire / un responsable. Aucune intégration officielle MarIA n’existe dans ce prototype ; aucun gain opérationnel n’a été mesuré.
+### Contrôle de la démonstration hébergée après push
+
+Après publication du commit de code `f46a2f7` sur `main`, le navigateur a chargé https://menagesimple-caseflow.vercel.app/ : le libellé « Revue spécifique requise » et les cinq dossiers initiaux à revoir étaient présents. Le message multi-sujets exact du brief a ensuite été créé sur cette origine. Le titre descriptif, le dommage principal, la qualité secondaire, les deux recommandations et le brouillon prudent ont été observés. Les compteurs sont passés à neuf dossiers et six revues spécifiques. Après rechargement, le même dossier, son titre, son message et ses deux sujets sont toujours présents. Aucune réinitialisation du stockage de cette origine n’a été effectuée. [Capture du contrôle en ligne](./docs/qa-live.jpg).
+
+Ces parcours restent des vérifications pilotées par l’agent, pas une revue humaine indépendante ni une suite E2E rejouable. Les autres étapes de revue, édition, approbation et résolution ont été vérifiées localement ; elles n’ont pas toutes été rejouées sur Vercel. Avant soumission, le propriétaire doit relire les règles, les négations, les cas inhabituels et les politiques métier, puis effectuer le parcours complet dans son navigateur habituel. Aucune intégration officielle MarIA n’existe dans ce prototype ; aucun gain opérationnel n’a été mesuré.
 
 ## Première version — 12 novembre 2026
 

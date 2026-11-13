@@ -19,7 +19,7 @@ npm run build
 npm run preview
 ```
 
-Le fichier `package-lock.json` fixe les versions installées. Aucun téléchargement à l’exécution : polices système, icônes embarquées, règles locales. Les liens documentaires s’ouvrent uniquement à la demande de l’opérateur. `dist/` contient le résultat statique du build. Une version hébergée a été fournie dans le brief QA : https://menagesimple-caseflow.vercel.app/. Les contrôles de cette mise à jour portent sur le code local ; la version effectivement servie après déploiement reste à vérifier.
+Le fichier `package-lock.json` fixe les versions installées. Aucun téléchargement à l’exécution : polices système, icônes embarquées, règles locales. Les liens documentaires s’ouvrent uniquement à la demande de l’opérateur. `dist/` contient le résultat statique du build. Démonstration hébergée fournie dans le brief QA : https://menagesimple-caseflow.vercel.app/. Le scénario multi-sujets, le compteur corrigé et la persistance après rechargement ont également été vérifiés sur cette URL après le push des correctifs ; détails dans le relevé de vérification.
 
 ## Pourquoi ce prototype ?
 
