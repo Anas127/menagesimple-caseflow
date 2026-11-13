@@ -23,7 +23,7 @@ export function createDraft(
     'Qualité du ménage':
       'Merci pour votre retour. Nous souhaitons préciser les points du ménage qui ne vous ont pas satisfait afin que l’équipe puisse examiner la possibilité d’un passage correctif.',
     'Dommage matériel':
-      'Merci de nous avoir signalé ce dommage. Votre demande nécessite une évaluation par un responsable. La responsabilité, une éventuelle couverture et toute indemnisation restent à examiner.',
+      'Merci pour ce signalement. Le dommage évoqué nécessite une évaluation des faits par un responsable. La responsabilité, une éventuelle couverture et toute indemnisation restent à examiner.',
     'Annulation / modification':
       'Merci pour votre demande de changement. L’équipe doit vérifier les horaires et les conditions applicables, notamment le préavis de 48 h mentionné dans les conditions publiques, avant de confirmer une suite.',
     Remplacement:

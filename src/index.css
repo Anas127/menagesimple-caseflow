@@ -1,4 +1,5 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source(none);
+@source './';
 
 @theme {
   --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
@@ -1608,4 +1609,58 @@ tr:nth-child(3n) .client-avatar {
 }
 .table-scroll {
   position: relative;
+}
+
+/* Stronger text contrast without changing layout or semantic badge colors. */
+.muted,
+.eyebrow,
+.nav-label,
+.workspace small,
+.operator small,
+.sidebar-card p,
+.case-subline,
+.client-cell small,
+.table-footer,
+.metric-card p,
+.prototype-notice,
+.references p,
+.timeline time,
+.app-footer,
+.bottom-note,
+.intake-banner p,
+.metadata span,
+.triage-result p,
+.checklist label,
+.tag {
+  color: #626e58;
+}
+th {
+  color: #626e58;
+}
+.status-new {
+  color: #3e6959;
+}
+.status-active {
+  color: #4c6080;
+}
+.status-waiting {
+  color: #7b5e29;
+}
+.status-done {
+  color: #4f6937;
+}
+.urgency-high {
+  color: #975137;
+}
+.urgency-medium {
+  color: #7b642b;
+}
+.urgency-normal {
+  color: #596d48;
+}
+.field-label,
+.approval,
+.action-note > .small,
+.demo-label {
+  color: #526b40;
 }

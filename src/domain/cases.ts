@@ -47,18 +47,29 @@ export function changeStatus(
   c: CustomerCase,
   status: Status,
   at = new Date().toISOString(),
+  resolutionNote = '',
 ): CustomerCase {
   if (!statuses.includes(status)) throw new Error('Statut inconnu.');
   if (c.status === status) return c;
   if (status === 'Résolu' && (!c.approvedAt || !c.reviewedAt))
     throw new Error('Confirmez la revue et approuvez le brouillon avant de résoudre le dossier.');
+  const outstanding = outstandingCriticalInfo(c);
+  if (status === 'Résolu' && outstanding.length > 0 && resolutionNote.trim().length < 10)
+    throw new Error(
+      'Des informations critiques restent manquantes. Documentez un motif de clôture d’au moins 10 caractères ou complétez le dossier.',
+    );
   return addActivity(
     {
       ...c,
       status,
-      ...(c.status === 'Résolu' ? { reviewedAt: undefined, approvedAt: undefined } : {}),
+      ...(status === 'Résolu'
+        ? { resolutionNote: outstanding.length ? resolutionNote.trim() : undefined }
+        : {}),
+      ...(c.status === 'Résolu'
+        ? { reviewedAt: undefined, approvedAt: undefined, resolutionNote: undefined }
+        : {}),
     },
-    `Statut : ${c.status} → ${status}.`,
+    `Statut : ${c.status} → ${status}.${status === 'Résolu' && outstanding.length ? ` Clôture motivée malgré informations manquantes (${outstanding.join(' ; ')}) : ${resolutionNote.trim()}` : ''}`,
     at,
   );
 }
@@ -99,13 +110,14 @@ export function humanReviewReasons(c: CustomerCase): string[] {
   const t = triage(c);
   return [
     ...t.reviewReasons,
-    ...t.criticalMissing
-      .filter((s) => !c.completedInfo.includes(s))
-      .map((s) => `Information critique manquante : ${s}`),
+    ...outstandingCriticalInfo(c).map((s) => `Information critique manquante : ${s}`),
     ...(c.override === 'À vérifier' && t.category !== 'À vérifier'
       ? ['Catégorie opérateur à vérifier']
       : []),
   ];
+}
+export function outstandingCriticalInfo(c: CustomerCase): string[] {
+  return triage(c).criticalMissing.filter((s) => !c.completedInfo.includes(s));
 }
 export function requiresHumanReview(c: CustomerCase): boolean {
   return humanReviewReasons(c).length > 0;
@@ -153,6 +165,7 @@ export function decodeCases(raw: string | null): CustomerCase[] | null {
         ) &&
         (c.override === undefined || categories.includes(c.override)) &&
         (c.overrideReason === undefined || typeof c.overrideReason === 'string') &&
+        (c.resolutionNote === undefined || typeof c.resolutionNote === 'string') &&
         Array.isArray(c.completedInfo) &&
         c.completedInfo.every((s: unknown) => typeof s === 'string') &&
         Array.isArray(c.activity) &&

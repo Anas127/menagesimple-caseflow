@@ -24,7 +24,7 @@ const rules = [
   {
     category: 'Qualité du ménage',
     pattern:
-      /\b(sale|poussiere|mal nettoye|mal fait|pas nettoye|non nettoye|insatisfaisant|bacle|traces|qualite|oublie)\w*\b/,
+      /\b(sale|poussiere|mal nettoye|mal fait|pas (?:ete )?nettoye|non nettoye|insatisfaisant|bacle|traces|qualite|oublie)\w*\b/,
   },
 ] as const;
 export function triage(
@@ -33,8 +33,17 @@ export function triage(
   const text = normalize(c.message);
   const matched = rules.filter((r) => r.pattern.test(text));
   const detected = matched.map((r) => r.category);
-  const category: Category = detected.length ? detected[0] : 'À vérifier';
-  const secondaryCategories = detected.slice(1);
+  // A negative or contradictory formulation is evidence to clarify, not an affirmative fact.
+  // Deliberately conservative; this does not attempt a general French-language parser.
+  const uncertain =
+    /\b(?:aucun(?:e)?|pas de|sans|rien)\b[^.!?;]{0,30}\b(?:dommages?|degats?|casse\w*|brise\w*)\b/.test(
+      text,
+    ) ||
+    /(?:\bne\b|\bn['’])[^.!?;]{0,35}\bpas\b[^.!?;]{0,30}\b(?:casse\w*|brise\w*|endommage\w*|sale\w*|annul\w*|remplac\w*|modifi\w*)\b/.test(
+      text,
+    );
+  const category: Category = detected.length && !uncertain ? detected[0] : 'À vérifier';
+  const secondaryCategories = uncertain ? detected : detected.slice(1);
   const damage = detected.includes('Dommage matériel');
   const cancellation = detected.includes('Annulation / modification');
   const missing: string[] = [];
@@ -75,7 +84,7 @@ export function triage(
     reviewReasons.push('Décision financière ou de couverture réservée à l’équipe');
   const criticalMissing = missing.filter((s) => s !== 'Disponibilités souhaitées à confirmer');
   const escalation = reviewReasons.length > 0 || criticalMissing.length > 0;
-  const actions = (detected.length ? detected : [category]).map((issue) => ({
+  const actions = [...new Set([category, ...secondaryCategories])].map((issue) => ({
     category: issue,
     text: recommendations[issue],
   }));
@@ -86,7 +95,7 @@ export function triage(
     criticalMissing,
     reviewReasons,
     explanation: matched.length
-      ? `${matched.map((r) => `${r.category} : signal « ${text.match(r.pattern)?.[0]} »`).join(' ; ')}.${matched.length > 1 ? ' Priorité du prototype : dommage, annulation / modification, remplacement, puis qualité. Chaque sujet reste à traiter séparément.' : ''} Une confirmation humaine reste nécessaire.`
+      ? `${uncertain ? 'Formulation négative ou potentiellement contradictoire : clarifier les faits avant de conclure. Signaux à vérifier : ' : ''}${matched.map((r) => `${r.category} : signal « ${text.match(r.pattern)?.[0]} »`).join(' ; ')}.${matched.length > 1 && !uncertain ? ' Priorité du prototype : dommage, annulation / modification, remplacement, puis qualité. Chaque sujet reste à traiter séparément.' : ''} Une confirmation humaine reste nécessaire.`
       : 'Aucun signal suffisamment explicite dans les règles du prototype. La catégorie reste incertaine.',
     signals: [...signals, ...reviewReasons],
     missing,

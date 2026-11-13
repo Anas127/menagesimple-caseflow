@@ -20,8 +20,9 @@ import {
 import { useCases } from './hooks/useCases';
 import { categories, statuses } from './domain/types';
 import type { Category, CustomerCase, Status } from './domain/types';
-import { caseCategories, metrics, requiresHumanReview } from './domain/cases';
-import { triage, normalize } from './domain/triage';
+import { metrics } from './domain/cases';
+import { filterCases } from './domain/inbox';
+import { triage } from './domain/triage';
 import { seedCases } from './data/syntheticCases';
 import { StatusBadge, UrgencyBadge } from './components/Badge';
 import { CaseDetail } from './components/CaseDetail';
@@ -40,19 +41,7 @@ export default function App() {
   const intakeButton = useRef<HTMLButtonElement>(null);
   const m = metrics(cases);
   const current = cases.find((c) => c.id === selected);
-  const filtered = cases.filter(
-    (c) =>
-      (!status || c.status === status) &&
-      (!category || caseCategories(c).includes(category)) &&
-      (!query ||
-        normalize(`${c.id} ${c.name} ${c.title} ${c.message} ${c.bookingRef}`).includes(
-          normalize(query),
-        )) &&
-      (view === 'all' ||
-        (view === 'review' && requiresHumanReview(c)) ||
-        (view === 'waiting' && c.status === 'En attente client') ||
-        (view === 'resolved' && c.status === 'Résolu')),
-  );
+  const filtered = filterCases(cases, { query, status, category, view });
   const navigate = (v: typeof view) => {
     setView(v);
     setSelected(null);

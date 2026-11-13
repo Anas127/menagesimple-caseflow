@@ -1,5 +1,7 @@
 # Vérifications exécutées
 
+**Dernière passe de préparation de soumission : [QA_EVIDENCE.md](./QA_EVIDENCE.md).** Elle documente 78 tests, l’installation propre et le garde-fou de clôture motivée. Les sections ci-dessous restent le journal historique des versions précédentes ; les anciennes dates de source non récupérable et anciens comportements ne remplacent pas le relevé final.
+
 ## Mise à jour QA finale — 13 novembre 2026
 
 Les résultats historiques du 12 novembre ci-dessous sont conservés comme trace de la première version. La définition du compteur a changé : le jeu initial compte désormais **8 dossiers, 5 revues spécifiques, 2 en attente client et 1 résolu**. Les anciennes captures à sept revues décrivent uniquement la version initiale.

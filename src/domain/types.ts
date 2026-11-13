@@ -30,6 +30,7 @@ export interface CustomerCase {
   reviewedAt?: string;
   override?: Category;
   overrideReason?: string;
+  resolutionNote?: string;
   completedInfo: string[];
   activity: Activity[];
 }

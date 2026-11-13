@@ -114,7 +114,16 @@ describe('revue spécifique calculée', () => {
     const reviewed = { ...c, reviewedAt: c.createdAt };
     expect(metrics([reviewed]).review).toBe(0);
     expect(metrics([{ ...reviewed, reviewedAt: undefined }]).review).toBe(1);
-    expect(metrics([changeStatus(approveDraft(reviewed), 'Résolu')]).review).toBe(0);
+    expect(
+      metrics([
+        changeStatus(
+          approveDraft(reviewed),
+          'Résolu',
+          undefined,
+          'Demande retirée après clarification du client.',
+        ),
+      ]).review,
+    ).toBe(0);
   });
   it('changer seulement le statut ouvert ne constitue pas une revue', () => {
     const c = newCase(mixed);

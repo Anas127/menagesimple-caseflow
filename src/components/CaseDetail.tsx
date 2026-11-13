@@ -18,6 +18,7 @@ import {
   approveDraft,
   changeStatus,
   humanReviewReasons,
+  outstandingCriticalInfo,
   overrideCategory,
   saveDraft,
 } from '../domain/cases';
@@ -47,6 +48,8 @@ export function CaseDetail({
   const [reason, setReason] = useState('');
   const [correcting, setCorrecting] = useState(false);
   const [regeneratePending, setRegeneratePending] = useState(false);
+  const [resolutionPending, setResolutionPending] = useState(false);
+  const [resolutionNote, setResolutionNote] = useState('');
   const run = (f: () => CustomerCase) => {
     try {
       update(f());
@@ -340,12 +343,66 @@ export function CaseDetail({
             <select
               id="case-status"
               value={c.status}
-              onChange={(e) => run(() => changeStatus(c, e.target.value as Status))}
+              onChange={(e) => {
+                const status = e.target.value as Status;
+                if (
+                  status === 'Résolu' &&
+                  c.reviewedAt &&
+                  c.approvedAt &&
+                  outstandingCriticalInfo(c).length
+                ) {
+                  setError('');
+                  setResolutionPending(true);
+                } else {
+                  setResolutionPending(false);
+                  run(() => changeStatus(c, status));
+                }
+              }}
             >
               {statuses.map((s) => (
                 <option key={s}>{s}</option>
               ))}
             </select>
+            {resolutionPending && c.status !== 'Résolu' && (
+              <section className="alert mt-4" aria-label="Clôture avec informations manquantes">
+                <h3>Informations critiques encore manquantes</h3>
+                <ul className="mt-2 mb-3">
+                  {outstandingCriticalInfo(c).map((info) => (
+                    <li key={info}>• {info}</li>
+                  ))}
+                </ul>
+                <p>
+                  Complétez le dossier, ou consignez votre décision humaine de clôture. Cela ne vaut
+                  ni accord financier ni résolution chez MénageSimple.
+                </p>
+                <label className="field-label mt-3" htmlFor="resolution-note">
+                  Motif de clôture malgré les informations manquantes
+                </label>
+                <textarea
+                  id="resolution-note"
+                  rows={3}
+                  maxLength={1000}
+                  value={resolutionNote}
+                  onChange={(e) => setResolutionNote(e.target.value)}
+                  placeholder="Ex. : Demande retirée par le client après clarification."
+                />
+                <p className="small mt-2">
+                  10 caractères minimum. Le motif et les éléments manquants seront conservés dans
+                  l’historique.
+                </p>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  <button className="button secondary" onClick={() => setResolutionPending(false)}>
+                    Continuer le suivi
+                  </button>
+                  <button
+                    className="button primary"
+                    onClick={() => run(() => changeStatus(c, 'Résolu', undefined, resolutionNote))}
+                  >
+                    Confirmer la clôture motivée
+                  </button>
+                </div>
+              </section>
+            )}
             {humanReviewReasons(c).length > 0 && (
               <div className="mt-4">
                 <h3>Motifs de revue spécifique</h3>
@@ -385,11 +442,17 @@ export function CaseDetail({
             </label>
             <p className="small muted">
               Une revue confirmée et un brouillon approuvé sont nécessaires pour résoudre le
-              dossier. Les éléments manquants restent au jugement de l’opérateur.
+              dossier. Si des informations critiques restent manquantes, une clôture motivée sera
+              demandée.
             </p>
             {c.approvedAt && (
               <p className="approval">
                 <Check size={15} /> Approuvé le {dateLabel(c.approvedAt)}
+              </p>
+            )}
+            {c.resolutionNote && (
+              <p className="small mt-3">
+                <strong>Motif de clôture :</strong> {c.resolutionNote}
               </p>
             )}
           </section>
@@ -409,7 +472,7 @@ export function CaseDetail({
                 </div>
               ))}
             <p className="reference-footnote">
-              Repères publics consultés le 12.11.2026, à revérifier. Ils ne remplacent ni le contrat
+              Repères publics consultés le 13.11.2026, à revérifier. Ils ne remplacent ni le contrat
               ni les procédures internes.
             </p>
           </section>

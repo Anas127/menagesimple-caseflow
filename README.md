@@ -1,152 +1,87 @@
 # MénageSimple CaseFlow
 
-Une console de suivi client en français : comprendre une demande, repérer les informations manquantes, relire une réponse, puis décider de la suite. Prototype indépendant sur huit dossiers entièrement fictifs. Aucun compte, aucune clé API, aucun système de production connecté.
+**[Ouvrir la démonstration](https://menagesimple-caseflow.vercel.app/)** · [Démonstration en 2 min 40](./DEMO_SCRIPT.md) · [Preuves QA](./QA_EVIDENCE.md) · [Auto-évaluation](./SUBMISSION_AUDIT.md)
 
-## Démarrer en une minute
+CaseFlow est une console française de suivi des demandes clients : comprendre les sujets, identifier les informations manquantes et choisir une prochaine étape. Un opérateur adapte et approuve une réponse, puis suit le dossier avec un historique local. C’est un prototype indépendant sur données synthétiques, sans connexion aux systèmes MénageSimple.
 
-Prérequis : Node.js **22.12 ou plus récent** et npm. Vérifié dans cet environnement avec Node 24.15.0 et npm 11.12.1.
+## Opportunité métier
+
+La [présentation officielle de MarIA](https://menagesimple.com/assistante-telephonique-ia-maria/) décrit une assistante qui recueille les demandes hors horaires et transmet un résumé à l’équipe. CaseFlow explore le traitement humain qui pourrait suivre : plusieurs sujets dans un même message, informations incomplètes et décisions à vérifier. Nous ne connaissons pas les outils internes de MénageSimple et n’affirmons pas qu’une fonction de suivi lui manque.
+
+Le [business case](./BUSINESS_CASE.md) contient les références officielles revérifiées le 13 novembre 2026 et un protocole de validation. Aucun gain de temps, résultat client ou ROI mesuré n’est revendiqué.
+
+## Ce que démontre le prototype
+
+- Huit dossiers fictifs initiaux ; recherche et filtres combinables par statut et sujet principal ou secondaire.
+- Simulation de résumé d’appel, prévention des doublons et titre français descriptif.
+- Triage déterministe : **dommage → annulation / modification → remplacement → qualité**. Chaque sujet conserve son explication, ses informations et son action. Une demande non reconnue ou une négation explicite reconnue reste « À vérifier ».
+- Consultation du message original et des références publiques ; correction motivée de la catégorie ; checklist des informations attendues.
+- Brouillon éditable et approbation locale. Une édition invalide l’approbation ; tous les dossiers nécessitent une revue et un brouillon approuvé avant résolution.
+- Clôture avec informations critiques encore manquantes uniquement avec un **motif explicite**, enregistré avec les lacunes dans l’historique. Aucun accord financier ni message envoyé.
+- Statuts Nouveau, En cours, En attente client, Résolu ; indicateurs calculés et persistance après rechargement.
+
+**Revue spécifique requise** compte les dossiers ouverts sans revue confirmée, avec un motif d’escalade (dommage, ambiguïté, contrat, décision financière) ou une information critique non cochée. Une correction vers À vérifier peut également déclencher cette revue. Une disponibilité de remplacement à confirmer ne suffit pas : les tâches courantes restent distinctes. Le compteur et sa file utilisent la même fonction ; confirmer une revue retire le dossier de la file, sans prétendre résoudre le problème opérationnel.
+
+Le jeu initial donne **8 dossiers / 5 revues spécifiques / 2 en attente client / 1 résolu**. Les actions modifient ces valeurs ; les filtres de vue ne modifient pas les totaux. Ne pas réinitialiser un stockage existant pour retrouver ces chiffres ; utiliser un profil de démonstration séparé.
+
+## Architecture
+
+React 19, TypeScript strict, Vite 7, Tailwind CSS 4, Vitest 4 et LocalStorage. Lucide fournit les icônes ; Prettier formate les sources. Aucun routeur, backend, compte, clé API, service payant ou nouveau framework.
+
+```text
+Résumé fictif / message → triage.ts → sujets, signaux, lacunes, recommandations
+                        → titles.ts + recommendations.ts → titre et brouillon
+Actions opérateur       → cases.ts → validations, transitions, historique, métriques
+Interface React         → useCases.ts → JSON LocalStorage (caseflow.demo.v1)
+Recherche / filtres     → inbox.ts → sous-liste ; les métriques gardent le jeu complet
+```
+
+Les règles sont séparées des composants. La priorité est une hypothèse de conception, pas une procédure interne approuvée. Le préavis compare réception et prestation, avec affichage en heure suisse, sans calcul de frais. Les liens vers la [FAQ](https://menagesimple.com/questions-frequentes-menage/) et les [conditions](https://menagesimple.com/conditions-generales/) restent des repères à vérifier dans le dossier individuel.
+
+## Reproduction
+
+Prérequis : **Node.js ≥ 22.12**, npm. Environnement vérifié : Node 24.15.0, npm 11.12.1. Le verrouillage des dépendances est inclus.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Ouvrir l’URL locale indiquée par Vite (habituellement http://127.0.0.1:5173). Puis :
+Ouvrir l’URL locale imprimée par Vite, habituellement http://127.0.0.1:5173/. Puis :
 
 ```sh
 npm test
+npm run typecheck
 npm run build
 npm run preview
+npm run format:check
 ```
 
-Le fichier `package-lock.json` fixe les versions installées. Aucun téléchargement à l’exécution : polices système, icônes embarquées, règles locales. Les liens documentaires s’ouvrent uniquement à la demande de l’opérateur. `dist/` contient le résultat statique du build. Démonstration hébergée fournie dans le brief QA : https://menagesimple-caseflow.vercel.app/. Le scénario multi-sujets, le compteur corrigé et la persistance après rechargement ont également été vérifiés sur cette URL après le push des correctifs ; détails dans le relevé de vérification.
+Le build produit `dist/`. Aucun fichier .env n’est nécessaire. L’installation propre avec `npm ci`, les tests, TypeScript et le build ont aussi été exécutés dans une copie séparée des sources, sans réutiliser node_modules ; procédure et résultats dans [QA_EVIDENCE.md](./QA_EVIDENCE.md).
 
-## Pourquoi ce prototype ?
+## Vérification
 
-L’hypothèse est qu’un dossier structuré pourrait faciliter le traitement humain des demandes après réception d’un message ou d’un résumé d’appel. CaseFlow met en évidence la prochaine étape et les éléments à demander, puis conserve les décisions locales. Il ne reconstruit ni la réservation ni la mise en relation avec les intervenants.
+**78 tests réussis dans 5 fichiers**, TypeScript et build de production réussis. Les tests couvrent classification, multi-sujets, escalade, modèles sans promesse automatique, métriques, filtres et réinitialisation, transitions, invalidation d’approbation, motif de clôture, titres et données sauvegardées anciennes.
 
-Nous ne connaissons pas les systèmes internes de MénageSimple et ne prétendons pas qu’un outil de gestion des réclamations lui manque. La valeur proposée reste une hypothèse à confronter à l’équipe. Aucun gain de temps, chiffre d’affaires ou indicateur opérationnel réel n’est annoncé.
+Les parcours du navigateur sont consignés séparément : filtres remis à zéro, édition et réapprobation, clôture motivée, historique, rechargement et responsive. [QA_EVIDENCE.md](./QA_EVIDENCE.md) fournit les commandes, résultats attendus / observés et limites ; [VERIFICATION.md](./VERIFICATION.md) conserve les vérifications historiques. Ce sont des contrôles de l’agent, pas une validation humaine indépendante ou un pilote avec l’entreprise.
 
-## Parcours utilisable
+## Développement assisté par IA
 
-1. Ouvrir l’un des huit dossiers ; filtrer par statut ou catégorie, ou rechercher un nom ou une référence.
-2. Comparer le message original au triage : catégorie suggérée, signal détecté, urgence, informations manquantes et recommandation.
-3. Consulter les références publiques. Une catégorie peut être corrigée avec un motif enregistré. Les précautions initiales restent visibles.
-4. Cocher uniquement les informations réellement vérifiées. Adapter le brouillon ; une modification invalide l’approbation antérieure.
-5. Confirmer la revue humaine, approuver le brouillon localement, puis passer le dossier à « Résolu ». Aucun message n’est envoyé.
-6. Revenir à la boîte de réception : les compteurs sont recalculés. Les données persistent après rechargement.
-7. « Simuler un appel » crée un dossier depuis un résumé fictif, sans inventer de référence de réservation. Les doublons textuels normalisés sont refusés.
-
-Les quatre statuts sont Nouveau, En cours, En attente client et Résolu. Tous les changements entre statuts ouverts sont permis ; une résolution exige une revue et une approbation. Réouvrir un dossier annule ces validations pour permettre une nouvelle revue. C’est un choix du prototype, **pas une procédure interne MénageSimple**.
-
-Les informations manquantes n’empêchent pas automatiquement une clôture : un opérateur peut conclure que la demande n’exige pas toutes ces pièces, après revue. Aucun remboursement, rendez-vous, remplacement, couverture d’assurance ou droit contractuel n’est accordé par le programme. Un opérateur peut écrire une promesse dans le champ libre ; la responsabilité de sa validation reste humaine.
-
-## Logique explicable
-
-`src/domain/triage.ts` applique des règles lexicales françaises normalisées (accents, casse, espaces). Aucun modèle de langage ne tourne dans l’application.
-
-| Signal                          | Suite suggérée                                                                | Garde-fou                                                 |
-| ------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Qualité du ménage               | Préciser les points à reprendre, examiner un passage correctif                | Aucune visite promise                                     |
-| Dommage matériel                | Évaluation par un responsable, photos à recueillir                            | Escalade obligatoire même en présence d’autres intentions |
-| Annulation / modification       | Vérifier le préavis indicatif à réception et les conditions publiques de 48 h | Aucuns frais ni droit calculés                            |
-| Remplacement                    | Confirmer la prestation et les disponibilités                                 | Aucune affectation ni réservation                         |
-| Message sans intention reconnue | « À vérifier », clarification                                                 | Clarification humaine avant décision                      |
-
-Le préavis compare l’horodatage de réception à celui de la prestation, et non à l’horloge actuelle : le jeu fictif reste reproductible. Les dates sont affichées dans le fuseau `Europe/Zurich`. Une date passée ou absente donne un préavis indéterminable. L’urgence n’est pas un engagement de délai de traitement.
-
-### Plusieurs sujets, une priorité explicite
-
-Toutes les catégories reconnues sont conservées. La priorité déterministe du prototype est **dommage matériel → annulation / modification → remplacement → qualité du ménage** : protection des biens, vérification contractuelle, continuité de prestation, puis qualité. Cet ordre est une hypothèse du prototype, à valider avec l’entreprise. Il choisit la catégorie principale ; les autres apparaissent séparément comme sujets secondaires. Un message sans signal reconnu reste « À vérifier ».
-
-Chaque sujet conserve son action, ses informations attendues, ses indicateurs et ses références. Par exemple, un vase cassé accompagné de vitres sales déclenche l’évaluation du dommage **et** l’examen d’un éventuel passage correctif. Le brouillon initial et sa régénération traitent les deux sujets. Aucune compensation ni couverture n’est accordée. Une correction de catégorie ne supprime pas les précautions liées aux sujets détectés. Les filtres recherchent aussi les catégories secondaires et la catégorie suggérée initiale.
-
-Les nouveaux dossiers reçoivent un titre français déterministe, par exemple « Vase endommagé et ménage insatisfaisant ». Un objet n’est nommé que si une construction reconnue le relie explicitement au dommage ; sinon le titre reste générique. Le titre présente les deux premiers sujets puis le nombre d’autres sujets éventuels. Le message original est conservé séparément.
-
-### Compteur « Revue spécifique requise »
-
-Les compteurs sont calculés à partir de l’état des dossiers. **Revue spécifique requise** inclut uniquement les dossiers non résolus, sans revue confirmée, avec au moins l’un des motifs suivants :
-
-- Dommage, demande ambiguë, annulation / modification, demande de remboursement, compensation ou assurance nécessitant une décision humaine.
-- Information critique encore non cochée : référence, date / heure, description du dommage, photos, points qualité à préciser ou nature de la demande.
-- Correction opérateur explicite vers « À vérifier ».
-
-Des disponibilités de remplacement à confirmer sont une tâche courante : elles ne suffisent pas à déclencher ce compteur. Un dossier qualité complet, sans demande financière, reste également hors de cette file même s’il est ouvert. **La revue et l’approbation avant résolution restent obligatoires pour tous les dossiers.**
-
-Le compteur et le filtre utilisent la même fonction `requiresHumanReview`. Confirmer une revue retire le dossier de la file ; révoquer la revue ou modifier la checklist / catégorie peut le réintroduire. Compléter les informations critiques suffit pour un dossier courant, mais ne supprime pas une escalade obligatoire liée à un dommage. Le compteur suit les revues restant à effectuer, pas les risques encore ouverts ni les résolutions opérationnelles.
-
-Les autres indicateurs comptent le total et les statuts En attente client et Résolu. L’historique conserve les changements de statut, corrections, revue, approbation et séquences d’édition du brouillon. Ce journal local n’est pas un audit de conformité.
-
-## Architecture et périmètre
-
-```text
-src/
-  components/     Inbox dans App, détail, badges, formulaire de simulation
-  data/           Huit dossiers fictifs et références publiques
-  domain/         Types, triage, recommandations, transitions, validation JSON, tests
-  hooks/          État React et persistance LocalStorage
-  App.tsx         Navigation locale, filtres et indicateurs calculés
-  index.css       Tailwind CSS 4 et styles du produit
-```
-
-React 19, TypeScript strict, Vite 7, Tailwind CSS 4, Vitest 4. Lucide fournit uniquement les icônes. Pas de routeur, backend, authentification, base de données, analytics, service payant ou intégration externe. Les noms abrégés, messages, villes associées aux personnes et références `DEMO-…` sont inventés ; ils ne représentent aucun client réel.
-
-Persistance sous `caseflow.demo.v1`. Une sauvegarde JSON invalide restaure les huit dossiers avec un avertissement. Un stockage bloqué ou plein laisse l’application utilisable en mémoire et affiche une alerte. « Réinitialiser la démo » demande confirmation avant de remplacer les modifications locales.
-
-**Compatibilité avec les anciennes sauvegardes :** les sujets secondaires, actions et motifs de revue sont recalculés depuis les champs déjà présents. Aucun nouveau champ persistant ni changement de clé n’est requis. Les anciens dossiers conservent leur titre, leur brouillon, leurs validations et leur historique : aucune réinitialisation ni suppression pour cette mise à jour. Les nouveaux titres s’appliquent aux nouvelles créations uniquement. Un ancien brouillon reste inchangé jusqu’à une régénération explicitement confirmée.
-
-## Sources et niveau de vérification
-
-Consultation technique le **12 novembre 2026** :
-
-- [Site MénageSimple](https://menagesimple.com/) : services récurrents, support, remplacement et gestion des réservations déjà proposés.
-- [FAQ publique](https://menagesimple.com/questions-frequentes-menage/) : retours qualité, signalement de dommages et photos. Utilisée comme repère documentaire, pas comme autorisation individuelle.
-- [Conditions générales](https://menagesimple.com/conditions-generales/), version affichée du 15 juillet 2026 : rubrique 10c pour le préavis de 48 h. Le dossier individuel et le contrat restent à vérifier.
-- [Page MarIA fournie dans le brief](https://menagesimple.com/assistante-telephonique-ia-maria/) : non récupérable avec l’outil de recherche lors de cette session. L’annonce du 5 novembre 2026 est donc une information fournie par le brief, **non revérifiée indépendamment ici**. Le format réel et l’existence d’une API ne sont pas connus. L’écran indique « MarIA-style simulation ».
-- [Stonks](https://stonks.ag/) : contexte de recrutement et rattachement fournis par le brief ; site non récupérable pendant cette session.
-- [Avis Trustpilot](https://fr.trustpilot.com/review/menagesimple.com) : piste qualitative fournie dans le brief, non exploitée comme donnée ni preuve de dysfonctionnement global. Aucun avis client réel n’a été copié dans les dossiers.
-
-Les règles de ce prototype doivent être approuvées par l’entreprise avant un usage réel. Les textes publics peuvent changer.
-
-## Usage de l’IA et vérification humaine
-
-Codex a assisté à la rédaction du code, des scénarios synthétiques, des règles, des tests, de l’interface et de cette documentation, ainsi qu’à l’exécution des vérifications techniques. Le produit ne fait aucun appel à une IA à l’exécution.
-
-**Décisions humaines attestées par le brief** : périmètre de suivi des demandes, stack React/TypeScript/Vite/Tailwind/Vitest/LocalStorage, huit scénarios fictifs, absence de connexions de production et maintien d’une décision humaine. Le propriétaire a explicitement demandé un projet local de code sans Sites. La priorité de sécurité pour les dommages, le détail des règles et la garde de résolution ont été implémentés par Codex et restent à valider par le propriétaire.
-
-La consultation des sources et les vérifications de navigateur effectuées par l’agent ne sont pas une revue humaine indépendante. **Aucune relecture par le propriétaire ou validation par MénageSimple n’est attestée.** Avant soumission, le propriétaire doit relire le français, les règles métier, les références et effectuer le parcours ci-dessous. Ne pas présenter cette étape comme déjà accomplie.
-
-Résultats et vérifications réellement exécutés : voir [VERIFICATION.md](./VERIFICATION.md).
+Codex a aidé à coder, tester, rechercher les sources et documenter. **Aucun LLM n’est utilisé à l’exécution.** Le périmètre et la stack viennent des briefs humains ; les détails des règles et garde-fous restent à approuver par le propriétaire et un responsable métier. [AI_AND_VERIFICATION.md](./AI_AND_VERIFICATION.md) distingue précisément assistance IA, résultats exécutés et revue humaine restante.
 
 ## Hypothèses et limites
 
-- Le triage lexical peut se tromper sur une négation (« rien n’est cassé »), un récit complexe, une faute de frappe ou une formulation inconnue. Il ne fournit pas de score de confiance artificiel. La correction motivée est disponible.
-- Les dates et références sont structurées dans les exemples initiaux ; une simulation ne les extrait pas du texte. Les lacunes peuvent être confirmées avec la checklist, sans téléversement de pièces. Le contenu d’un justificatif n’est jamais vérifié automatiquement.
-- Le stockage est propre au navigateur et à l’origine locale. Pas de partage entre opérateurs, synchronisation multi-onglets, sauvegarde distante, protection d’accès ou conservation garantie. Démonstration sur données fictives uniquement.
-- La validation JSON protège des sauvegardes malformées, pas d’une personne qui altère volontairement son propre stockage. Les brouillons libres ne sont pas un filtre de conformité.
-- L’application n’exécute aucune résolution opérationnelle : un dossier « Résolu » signifie une clôture locale de démonstration, sans modification chez MénageSimple.
-- Responsive prévu, avec tableau défilant horizontalement sur petit écran. Pas de certification WCAG ni audit complet des lecteurs d’écran. Les badges portent un texte en plus de leur couleur.
-- L’exercice est conçu pour une revue humaine d’environ quatre heures : cadrage 30 min, implémentation 120 min, tests et parcours 60 min, documentation et répétition 30 min. Il ne s’agit pas d’un relevé d’heures humaines réellement passées.
+- Données entièrement fictives ; aucun accès aux systèmes internes et **aucune intégration officielle MarIA**. Le format réel des résumés est inconnu.
+- Aucune communication client, réservation, compensation ou couverture d’assurance exécutée. Un opérateur peut écrire librement une réponse ; son approbation reste sous sa responsabilité.
+- Règles lexicales françaises : faux positifs, fautes, implicites et négations non reconnues restent possibles. Le repli prudent n’est pas une compréhension générale du langage. Les objets ne sont nommés dans un nouveau titre que si une construction reconnue les relie au dommage.
+- LocalStorage par navigateur et origine, sans vrai backend multi-utilisateur, synchronisation ou protection d’accès de production. Le journal local est modifiable et ne constitue pas une piste d’audit réglementaire.
+- Les anciens dossiers sont conservés : sujets et motifs de revue sont recalculés depuis leurs champs existants ; aucun reset pour migration. Anciens titres et brouillons ne sont pas écrasés. Le nouveau champ optionnel de motif de clôture n’est exigé qu’à une nouvelle clôture avec lacunes critiques.
+- Les photos ne sont pas chargées ni vérifiées. La checklist atteste une action de l’opérateur, pas la présence technique d’un justificatif.
+- Écran ordinateur et mobile contrôlés, tableau défilant sur petit écran. Pas de certification WCAG, d’audit complet des lecteurs d’écran ou de comparaison exhaustive des navigateurs.
+- Exercice volontairement limité. Aucun temps humain réel total ni score de recrutement n’est attesté. **La vidéo reste à enregistrer et chronométrer.**
 
-## Plan de validation avec l’entreprise
+## Validation future
 
-1. Présenter l’hypothèse à deux ou trois opérateurs et un responsable : cartographier le suivi actuel et vérifier si le problème existe déjà ou est couvert par leurs outils.
-2. Faire valider catégories, pièces attendues, exceptions et références par un responsable. Construire un petit jeu de dossiers fictifs annotés, puis, uniquement avec autorisation et précautions appropriées, un échantillon anonymisé.
-3. Comparer le traitement actuel et le prototype sur des dossiers de difficulté comparable, en alternant l’ordre pour limiter l’effet d’apprentissage.
-4. Mesurer **temps de triage**, **précision des informations manquantes détectées** (dont faux positifs et oublis), **taux et motifs de corrections humaines**, et **complétion des dossiers**. Relever séparément tout défaut d’escalade d’un dommage et toute proposition de promesse injustifiée.
-5. Examiner les désaccords avec les opérateurs et décider ensemble de poursuivre, modifier ou abandonner. Définir des critères d’acceptation avant la comparaison ; ne pas annoncer de pourcentage d’amélioration sans observations.
+Confirmer d’abord que le besoin existe avec les opérateurs, puis comparer un petit lot de dossiers équivalents avec et sans prototype. Mesurer temps de triage, reclassification, informations critiques manquantes, première action humaine et relances évitables. Examiner les erreurs avant d’annoncer un effet : [protocole proposé](./BUSINESS_CASE.md).
 
-Aucun pilote, résultat client ou gain mesuré n’est revendiqué.
-
-## Démonstration — 2 min 45 maximum
-
-| Temps     | Action et message                                                                                                                                                                                             |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0:00–0:20 | Montrer le bandeau fictif et l’inbox. « Après une demande entrante, l’opérateur doit choisir une prochaine étape et garder la trace de sa décision. Voici une hypothèse de complément aux outils existants. » |
-| 0:20–0:55 | Ouvrir Camille. Comparer message, signal « sale », proposition de passage correctif et FAQ. Montrer que le programme suggère sans promettre.                                                                  |
-| 0:55–1:30 | Adapter la réponse, confirmer la revue, approuver et résoudre. Revenir à l’inbox : les compteurs changent. Recharger : l’état persiste.                                                                       |
-| 1:30–1:55 | Ouvrir Alex. Montrer le dommage, l’escalade humaine et la demande de photos, sans accord d’assurance ou indemnisation.                                                                                        |
-| 1:55–2:20 | Simuler : « La cliente demande à être rappelée au sujet de son dernier passage. » Montrer « À vérifier », référence/date manquantes et clarification. Aucun appel réel.                                       |
-| 2:20–2:45 | Montrer le résultat des tests et la commande de build. Conclure par les quatre mesures du plan de validation, sans annoncer de gain.                                                                          |
-
-Les indicateurs du jeu initial sont désormais **8 dossiers, 5 en revue spécifique, 2 en attente client, 1 résolu**. Utiliser un profil de démonstration séparé pour présenter ce jeu initial ; ne pas effacer des dossiers existants pour mettre à jour l’application.
+Avant soumission, relire règles et textes, refaire le parcours, vérifier l’accès du recruteur au dépôt privé et enregistrer la vidéo selon [DEMO_SCRIPT.md](./DEMO_SCRIPT.md). Aucune invitation ni soumission n’est effectuée automatiquement.
