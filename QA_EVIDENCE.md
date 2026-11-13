@@ -102,4 +102,12 @@ Une recherche bornée des motifs de clés usuelles (OpenAI, GitHub, AWS, clés p
 - Les négations non reconnues, fautes et phrases complexes peuvent encore tromper les règles. Les pièces cochées ne sont pas vérifiées techniquement.
 - Revue humaine du français, des règles et du scénario métier à faire ; aucun responsable MénageSimple n’a validé le prototype. Aucun pilote ni impact réel mesuré.
 - Script d’environ **environ 290 mots**, prévu pour 2 min 40 avec gestes en parallèle. **Vidéo non enregistrée, durée réelle non mesurée.**
-- La vérification de la dernière version hébergée doit être distinguée des contrôles locaux et est consignée après le push effectif ; ne pas déduire un déploiement du seul succès du build.
+- Le contrôle hébergé ci-dessous est ciblé ; les autres parcours de cette passe restent des contrôles locaux. Le succès d’un build seul ne prouve pas un déploiement.
+
+## Déploiement vérifié après publication
+
+Après le push du commit de code **`eb7d7f4`**, le navigateur a chargé https://menagesimple-caseflow.vercel.app/ et observé le script **`/assets/index-re4f-q2i.js`**, correspondant au build contrôlé. Le déploiement de ce code est donc observé, pas déduit du push.
+
+Sur un dossier multi-sujets déjà conservé dans le LocalStorage de cette origine, la revue et l’approbation ont été confirmées. Sélectionner Résolu a affiché le **nouveau panneau de clôture motivée**, avec référence, date et photos encore manquantes ; le statut est resté Nouveau. « Continuer le suivi » a fermé le panneau sans clôturer. Le dossier a ensuite été placé En attente client ; après rechargement, son message, ses deux sujets, son brouillon approuvé et son historique sont toujours présents. Aucun stockage existant n’a été réinitialisé, aucun message client envoyé et aucune clôture financière exécutée.
+
+[Capture du garde-fou sur la version hébergée](./docs/final-live-guard.jpg). L’enregistrement de cette preuve et les dernières corrections documentaires ne changent pas le code de l’application vérifié ci-dessus.
