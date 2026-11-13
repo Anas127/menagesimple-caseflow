@@ -1,0 +1,69 @@
+1
+00:00:00,000 --> 00:00:12,000
+CaseFlow · une hypothèse opérationnelle
+MénageSimple : MarIA recueille les demandes hors horaires. CaseFlow explore le suivi humain des demandes complexes, sans connexion aux systèmes internes.
+
+2
+00:00:12,000 --> 00:00:19,000
+Un résumé entièrement fictif
+Vitres sales, vase cassé et compensation demandée : une même demande contient plusieurs sujets. Ceci est une simulation, sans intégration officielle MarIA.
+
+3
+00:00:19,000 --> 00:00:27,000
+Une priorité expliquée, aucun sujet perdu
+Le dommage est prioritaire. La qualité reste un sujet secondaire distinct. Chaque catégorie indique le signal qui a déclenché la règle.
+
+4
+00:00:27,000 --> 00:00:39,000
+Deux sujets, deux actions à examiner
+Dommage : recueillir les faits et les photos. Qualité : évaluer séparément un éventuel passage correctif. Aucune compensation ni assurance n’est accordée.
+
+5
+00:00:39,000 --> 00:00:49,000
+Les informations manquantes sont explicites
+La référence de réservation, la date et les photos restent à demander. Une case cochée ne remplace pas la vérification d’un justificatif.
+
+6
+00:00:49,000 --> 00:01:01,000
+Une réponse préparée, puis adaptée
+Le brouillon est éditable. La responsabilité, la couverture et toute compensation restent à évaluer : le logiciel ne promet aucun résultat.
+
+7
+00:01:01,000 --> 00:01:11,000
+L’opérateur confirme sa revue
+Le message, les lacunes et les références publiques sont examinés. Cette revue locale ne constitue pas une décision automatique d’indemnisation.
+
+8
+00:01:11,000 --> 00:01:23,000
+Une approbation explicite et traçable
+L’approbation et son horodatage sont enregistrés. Aucun message n’est envoyé. Toute nouvelle modification invalide cette approbation.
+
+9
+00:01:23,000 --> 00:01:35,000
+Les indicateurs suivent les décisions
+Le dossier est en attente client. Les totaux sont calculés depuis les cas réels de la démo ; les filtres ne modifient pas ces totaux.
+
+10
+00:01:35,000 --> 00:01:47,000
+Quand le message est incertain : À vérifier
+La demande de Léa ne permet pas de conclure. Une clarification humaine est demandée, sans inventer de catégorie certaine ni de solution.
+
+11
+00:01:47,000 --> 00:01:59,000
+Aucune clôture silencieuse avec des lacunes
+Même après revue et approbation, des informations critiques manquantes imposent un motif de clôture enregistré. Le dossier reste ouvert ici.
+
+12
+00:01:59,000 --> 00:02:14,000
+Des résultats exécutés, pas supposés
+78 tests réussis dans 5 fichiers, TypeScript strict vérifié. Le moteur est déterministe, sans LLM à l’exécution. Codex a assisté le développement.
+
+13
+00:02:14,000 --> 00:02:28,000
+Valider l’hypothèse avec les opérateurs
+Comparer temps de triage, corrections, informations manquantes et relances évitables. Aucun gain de temps, résultat client ou ROI n’est encore démontré.
+
+14
+00:02:28,000 --> 00:02:40,000
+Prototype indépendant · démonstration automatisée
+Version locale de production, données synthétiques, captures réelles montées et sous-titrées. Revue humaine indépendante et accès du recruteur à confirmer.

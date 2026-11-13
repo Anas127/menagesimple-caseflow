@@ -1,6 +1,6 @@
 # MénageSimple CaseFlow
 
-**[Ouvrir la démonstration](https://menagesimple-caseflow.vercel.app/)** · [Démonstration en 2 min 40](./DEMO_SCRIPT.md) · [Preuves QA](./QA_EVIDENCE.md) · [Auto-évaluation](./SUBMISSION_AUDIT.md)
+**[Ouvrir la démonstration](https://menagesimple-caseflow.vercel.app/)** · **[Vidéo silencieuse — 2:40](./docs/media/caseflow-demo-fr.mp4)** · [Démonstration en 2 min 40](./DEMO_SCRIPT.md) · [Preuves QA](./QA_EVIDENCE.md) · [Auto-évaluation](./SUBMISSION_AUDIT.md)
 
 CaseFlow est une console française de suivi des demandes clients : comprendre les sujets, identifier les informations manquantes et choisir une prochaine étape. Un opérateur adapte et approuve une réponse, puis suit le dossier avec un historique local. C’est un prototype indépendant sur données synthétiques, sans connexion aux systèmes MénageSimple.
 
@@ -78,10 +78,10 @@ Codex a aidé à coder, tester, rechercher les sources et documenter. **Aucun LL
 - Les anciens dossiers sont conservés : sujets et motifs de revue sont recalculés depuis leurs champs existants ; aucun reset pour migration. Anciens titres et brouillons ne sont pas écrasés. Le nouveau champ optionnel de motif de clôture n’est exigé qu’à une nouvelle clôture avec lacunes critiques.
 - Les photos ne sont pas chargées ni vérifiées. La checklist atteste une action de l’opérateur, pas la présence technique d’un justificatif.
 - Écran ordinateur et mobile contrôlés, tableau défilant sur petit écran. Pas de certification WCAG, d’audit complet des lecteurs d’écran ou de comparaison exhaustive des navigateurs.
-- Exercice volontairement limité. Aucun temps humain réel total ni score de recrutement n’est attesté. **La vidéo reste à enregistrer et chronométrer.**
+- Exercice volontairement limité. Aucun temps humain réel total ni score de recrutement n’est attesté. **La vidéo silencieuse sous-titrée est créée et mesurée à 160,0 secondes ; elle reste à relire par le propriétaire.**
 
 ## Validation future
 
 Confirmer d’abord que le besoin existe avec les opérateurs, puis comparer un petit lot de dossiers équivalents avec et sans prototype. Mesurer temps de triage, reclassification, informations critiques manquantes, première action humaine et relances évitables. Examiner les erreurs avant d’annoncer un effet : [protocole proposé](./BUSINESS_CASE.md).
 
-Avant soumission, relire règles et textes, refaire le parcours, vérifier l’accès du recruteur au dépôt privé et enregistrer la vidéo selon [DEMO_SCRIPT.md](./DEMO_SCRIPT.md). Aucune invitation ni soumission n’est effectuée automatiquement.
+Avant soumission, relire règles et textes, refaire le parcours, vérifier l’accès du recruteur au dépôt privé et visionner la vidéo selon [DEMO_SCRIPT.md](./DEMO_SCRIPT.md). Aucune invitation ni soumission n’est effectuée automatiquement.

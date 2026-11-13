@@ -28,15 +28,17 @@ Les corrections significatives sont la clôture motivée, un repli prudent sur d
 | Judgment and scope              |      15 | Petit périmètre conservé ; dommages, contrats et finance humains ; compatibilité des données ; aucun gain ou intégration inventé. Règles métier à faire approuver.                                        |           14 |
 | AI usage and human verification |      15 | [Rôles et limites précis](./AI_AND_VERIFICATION.md), tests et erreurs corrigées, sources relues. Contrôles réalisés par l’agent ; relecture humaine indépendante non attestée.                            |           12 |
 | Tests and reproducibility       |      15 | [78 tests / 5 fichiers](./QA_EVIDENCE.md), TypeScript et build réussis, installation propre npm ci ; assets JS / CSS identiques sur cette machine. Pas de runner E2E ni validation sur une autre machine. |           14 |
-| Communication                   |      10 | README structuré, business case, preuves, limites et [script de 2 min 40](./DEMO_SCRIPT.md). Vidéo non enregistrée et non chronométrée.                                                                   |            8 |
-| **Total indicatif**             | **100** | **Estimation subjective, sans résultat d’évaluation du recruteur.**                                                                                                                                       |       **88** |
+| Communication                   |      10 | README structuré, business case, preuves, limites et [script de 2 min 40](./DEMO_SCRIPT.md). Vidéo silencieuse de 160,0 s créée, sous-titrée et contrôlée ; visionnage humain final non attesté.          |            9 |
+| **Total indicatif**             | **100** | **Estimation subjective, sans résultat d’évaluation du recruteur.**                                                                                                                                       |       **89** |
 
 La cible 90+ est une ambition. Les preuves actuelles ne justifient pas de l’attribuer automatiquement. Le prototype se défend par son exécution et sa transparence ; les points manquants concernent surtout des preuves externes et la présentation finale.
+
+La production effective du film a fait évoluer uniquement l’estimation Communication de 8 à 9 ; aucun point de revue humaine ou de pilote réel n’a été ajouté artificiellement.
 
 ## À terminer par le propriétaire avant envoi
 
 1. Refaire le parcours complet et relire le français / les garde-fous ; consigner qui l’a fait et ce qui a réellement été vérifié. Ne pas cocher cette étape avant son exécution.
-2. Enregistrer la démonstration, mesurer sa durée réelle et conserver une marge sous trois minutes. Le script seul ne satisfait pas la demande de vidéo.
+2. Visionner la vidéo livrée en entier et valider le contenu. Sa durée de 160,0 secondes et son décodage ont été vérifiés par l’agent ; aucun visionnage humain complet n’est attesté.
 3. Vérifier que Luca peut accéder au dépôt privé et à la vidéo. Aucun partage ni message au recruteur n’est envoyé par l’agent.
 4. Vérifier la dernière version servie après publication, puis le lien depuis une session de démonstration séparée, sans effacer des dossiers existants.
 5. Soumettre avant le **15 novembre 2026 à 23:59, heure de Zurich**, échéance indiquée dans le brief. Le dépôt ne prouve ni soumission ni réception.

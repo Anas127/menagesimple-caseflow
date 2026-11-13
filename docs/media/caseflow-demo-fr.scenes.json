@@ -1,0 +1,90 @@
+{
+  "duration_seconds": 160,
+  "method": "Captures réelles de l’interface, montage à deux images par seconde, pauses de lecture, sous-titres français, aucun audio.",
+  "scenes": [
+    {
+      "start": 0,
+      "end": 12,
+      "title": "CaseFlow · une hypothèse opérationnelle",
+      "caption": "MénageSimple : MarIA recueille les demandes hors horaires. CaseFlow explore le suivi humain des demandes complexes, sans connexion aux systèmes internes."
+    },
+    {
+      "start": 12,
+      "end": 19,
+      "title": "Un résumé entièrement fictif",
+      "caption": "Vitres sales, vase cassé et compensation demandée : une même demande contient plusieurs sujets. Ceci est une simulation, sans intégration officielle MarIA."
+    },
+    {
+      "start": 19,
+      "end": 27,
+      "title": "Une priorité expliquée, aucun sujet perdu",
+      "caption": "Le dommage est prioritaire. La qualité reste un sujet secondaire distinct. Chaque catégorie indique le signal qui a déclenché la règle."
+    },
+    {
+      "start": 27,
+      "end": 39,
+      "title": "Deux sujets, deux actions à examiner",
+      "caption": "Dommage : recueillir les faits et les photos. Qualité : évaluer séparément un éventuel passage correctif. Aucune compensation ni assurance n’est accordée."
+    },
+    {
+      "start": 39,
+      "end": 49,
+      "title": "Les informations manquantes sont explicites",
+      "caption": "La référence de réservation, la date et les photos restent à demander. Une case cochée ne remplace pas la vérification d’un justificatif."
+    },
+    {
+      "start": 49,
+      "end": 61,
+      "title": "Une réponse préparée, puis adaptée",
+      "caption": "Le brouillon est éditable. La responsabilité, la couverture et toute compensation restent à évaluer : le logiciel ne promet aucun résultat."
+    },
+    {
+      "start": 61,
+      "end": 71,
+      "title": "L’opérateur confirme sa revue",
+      "caption": "Le message, les lacunes et les références publiques sont examinés. Cette revue locale ne constitue pas une décision automatique d’indemnisation."
+    },
+    {
+      "start": 71,
+      "end": 83,
+      "title": "Une approbation explicite et traçable",
+      "caption": "L’approbation et son horodatage sont enregistrés. Aucun message n’est envoyé. Toute nouvelle modification invalide cette approbation."
+    },
+    {
+      "start": 83,
+      "end": 95,
+      "title": "Les indicateurs suivent les décisions",
+      "caption": "Le dossier est en attente client. Les totaux sont calculés depuis les cas réels de la démo ; les filtres ne modifient pas ces totaux."
+    },
+    {
+      "start": 95,
+      "end": 107,
+      "title": "Quand le message est incertain : À vérifier",
+      "caption": "La demande de Léa ne permet pas de conclure. Une clarification humaine est demandée, sans inventer de catégorie certaine ni de solution."
+    },
+    {
+      "start": 107,
+      "end": 119,
+      "title": "Aucune clôture silencieuse avec des lacunes",
+      "caption": "Même après revue et approbation, des informations critiques manquantes imposent un motif de clôture enregistré. Le dossier reste ouvert ici."
+    },
+    {
+      "start": 119,
+      "end": 134,
+      "title": "Des résultats exécutés, pas supposés",
+      "caption": "78 tests réussis dans 5 fichiers, TypeScript strict vérifié. Le moteur est déterministe, sans LLM à l’exécution. Codex a assisté le développement."
+    },
+    {
+      "start": 134,
+      "end": 148,
+      "title": "Valider l’hypothèse avec les opérateurs",
+      "caption": "Comparer temps de triage, corrections, informations manquantes et relances évitables. Aucun gain de temps, résultat client ou ROI n’est encore démontré."
+    },
+    {
+      "start": 148,
+      "end": 160,
+      "title": "Prototype indépendant · démonstration automatisée",
+      "caption": "Version locale de production, données synthétiques, captures réelles montées et sous-titrées. Revue humaine indépendante et accès du recruteur à confirmer."
+    }
+  ]
+}
