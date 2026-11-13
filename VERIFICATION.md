@@ -1,0 +1,65 @@
+# Vérifications exécutées
+
+Vérifications réalisées par Codex le **12 novembre 2026** dans le projet local. Elles ne constituent pas une validation par le propriétaire ou par MénageSimple.
+
+## Contrôles automatisés
+
+| Commande        | Résultat réellement observé                                                                                |
+| --------------- | ---------------------------------------------------------------------------------------------------------- |
+| `npm install`   | Installation effectuée, fichier de verrouillage généré ; audit npm : 0 vulnérabilité signalée à cette date |
+| `npm test`      | **37 tests réussis**, 2 fichiers de test, aucun échec                                                      |
+| `npm run build` | **Réussi** : TypeScript strict puis build Vite de production                                               |
+
+Le build final observé produit notamment un bundle JavaScript d’environ **262 kB / 82 kB gzip** et une feuille CSS d’environ **25 kB / 6 kB gzip**. Ces tailles décrivent le prototype, pas une mesure de performance utilisateur.
+
+Les premiers essais d’installation, de tests et de build ont été bloqués par le sandbox Windows (accès réseau ou lecture par esbuild). Les commandes ont ensuite été réellement exécutées avec les autorisations accordées. Aucun correctif de contournement du sandbox n’a été ajouté au projet.
+
+Les tests couvrent :
+
+- Classification d’une plainte qualité avec explication et recommandation prudente.
+- Escalade d’un dommage même lorsque le message contient aussi une annulation.
+- Référence, date, précisions et justificatifs manquants.
+- Demandes inconnues, vides, ambiguës ou à intentions multiples.
+- Annulation sous 48 h, exactement 48 h, dates passées et décision humaine requise.
+- Distinction entre l’absence du client et un besoin de remplacement.
+- Absence de promesse financière ou de couverture dans les modèles générés.
+- Transitions de statut ; résolution bloquée sans revue et approbation ; réouverture invalidant la validation.
+- Invalidation d’une approbation après édition, refus d’un brouillon vide, regroupement des séquences d’édition.
+- Correction motivée et traçable des catégories.
+- Huit dossiers initiaux, compteurs calculés et mise à jour après résolution.
+- Aller-retour JSON, données corrompues ou identifiants dupliqués refusés.
+- Création d’un dossier de simulation et prévention des doublons textuels normalisés.
+
+## Parcours exécutés dans le navigateur
+
+Sur le serveur Vite local, avec observation du DOM et captures d’écran :
+
+1. Ouverture de la boîte de réception et vérification des indicateurs initiaux 8 / 7 / 2 / 1.
+2. Ouverture du dossier Camille ; tentative de résolution avant revue : refus explicite affiché.
+3. Modification du brouillon, confirmation de revue, approbation puis résolution. L’historique enregistre les étapes, les compteurs passent à 8 / 6 / 2 / 2.
+4. Rechargement : le dossier résolu et les compteurs modifiés sont conservés.
+5. Filtres combinés Nouveau + Dommage matériel : seul Alex reste affiché. Recherche sans correspondance : état vide et bouton de retour fonctionnels.
+6. Simulation d’un résumé ambigu : création d’un neuvième dossier, catégorie À vérifier, référence et date manquantes. Nouvelle soumission du même message : doublon refusé.
+7. Dossier Alex : dommage prioritaire, escalade humaine, demande de photos, absence de décision d’assurance. Checklist et passage En attente client fonctionnels.
+8. Dossier Sophie : préavis indicatif de 24 h à réception, repère 48 h et lien vers les conditions publiques. Correction motivée vers À vérifier visible dans le dossier et l’historique.
+9. Vue mobile, viewport demandé de 390 × 844 : navigation et cartes adaptées, formulaire de simulation lisible. Un débordement du libellé accessible de la table a été corrigé ; après correction, largeur document 375 px pour viewport 390 px (barre de défilement comprise), tableau défilant dans son conteneur de 341 px. Détail de dossier également consulté au format mobile. Le viewport temporaire a ensuite été réinitialisé.
+10. La confirmation native de réinitialisation a bloqué l’outil de navigateur ; elle a été remplacée par une confirmation intégrée à l’interface. Cette nouvelle confirmation et la confirmation de remplacement du brouillon ont été exécutées avec succès. Les huit dossiers initiaux ont été restaurés.
+11. Aucun avertissement ni erreur relevé par l’outil de console sur l’onglet final inspecté.
+
+Ces contrôles sont des parcours de navigateur pilotés par l’agent, pas des tests E2E automatisés rejouables. Les tests Vitest restent indépendants de l’interface.
+
+Captures de la version vérifiée :
+
+- [Boîte de réception](./docs/caseflow-inbox.jpg)
+- [Dossier et triage](./docs/caseflow-detail.jpg)
+
+## Revue humaine à effectuer avant soumission
+
+- Relire les textes français et le brief de recrutement ; refaire le parcours de démonstration en moins de trois minutes.
+- Vérifier les pages publiques à la date de présentation, notamment la page MarIA non récupérable lors de la recherche de cette session.
+- Confirmer les règles avec un responsable métier avant tout pilote ; tester négations, fautes de frappe et formulations atypiques.
+- Vérifier les navigateurs réellement utilisés par les opérateurs, navigation au clavier, lecteur d’écran et contrastes. Aucune certification d’accessibilité n’est revendiquée.
+- Vérifier l’installation avec `npm ci` sur une autre machine et le service des fichiers `dist/` dans l’environnement de revue choisi. L’installation exécutée ici était `npm install`.
+- Ne saisir aucune donnée réelle : aucune procédure de sécurité ou de conservation adaptée à la production n’a été mise en place.
+
+Aucun résultat d’exploitation, économie, intégration MarIA ou validation humaine indépendante n’est revendiqué.
