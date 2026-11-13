@@ -1,6 +1,6 @@
 # MénageSimple CaseFlow
 
-**[Ouvrir la démonstration](https://menagesimple-caseflow.vercel.app/)** · **[Vidéo silencieuse — 2:40](./docs/media/caseflow-demo-fr.mp4)** · [Démonstration en 2 min 40](./DEMO_SCRIPT.md) · [Preuves QA](./QA_EVIDENCE.md) · [Auto-évaluation](./SUBMISSION_AUDIT.md)
+**[Ouvrir la démonstration](https://menagesimple-caseflow.vercel.app/)** · **[Vidéo silencieuse — 2:15](./docs/media/caseflow-demo-fr.mp4)** · [Démonstration en 2 min 15](./DEMO_SCRIPT.md) · [Preuves QA](./QA_EVIDENCE.md) · [Auto-évaluation](./SUBMISSION_AUDIT.md)
 
 CaseFlow est une console française de suivi des demandes clients : comprendre les sujets, identifier les informations manquantes et choisir une prochaine étape. Un opérateur adapte et approuve une réponse, puis suit le dossier avec un historique local. C’est un prototype indépendant sur données synthétiques, sans connexion aux systèmes MénageSimple.
 
@@ -78,7 +78,7 @@ Codex a aidé à coder, tester, rechercher les sources et documenter. **Aucun LL
 - Les anciens dossiers sont conservés : sujets et motifs de revue sont recalculés depuis leurs champs existants ; aucun reset pour migration. Anciens titres et brouillons ne sont pas écrasés. Le nouveau champ optionnel de motif de clôture n’est exigé qu’à une nouvelle clôture avec lacunes critiques.
 - Les photos ne sont pas chargées ni vérifiées. La checklist atteste une action de l’opérateur, pas la présence technique d’un justificatif.
 - Écran ordinateur et mobile contrôlés, tableau défilant sur petit écran. Pas de certification WCAG, d’audit complet des lecteurs d’écran ou de comparaison exhaustive des navigateurs.
-- Exercice volontairement limité. Aucun temps humain réel total ni score de recrutement n’est attesté. **La vidéo silencieuse sous-titrée est créée et mesurée à 160,0 secondes ; elle reste à relire par le propriétaire.**
+- Exercice volontairement limité. Aucun temps humain réel total ni score de recrutement n’est attesté. **La vidéo silencieuse sous-titrée est créée et mesurée à 135,0 secondes ; elle reste à relire par le propriétaire.**
 
 ## Validation future
 

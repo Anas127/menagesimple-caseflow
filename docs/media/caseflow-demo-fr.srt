@@ -1,69 +1,59 @@
 1
 00:00:00,000 --> 00:00:12,000
-CaseFlow · une hypothèse opérationnelle
-MénageSimple : MarIA recueille les demandes hors horaires. CaseFlow explore le suivi humain des demandes complexes, sans connexion aux systèmes internes.
+CaseFlow — chaque demande devient une prochaine action
+J’ai conçu CaseFlow pour structurer le suivi client de MénageSimple : identifier les problèmes, préparer la réponse et garder la maîtrise de chaque décision.
 
 2
 00:00:12,000 --> 00:00:19,000
-Un résumé entièrement fictif
-Vitres sales, vase cassé et compensation demandée : une même demande contient plusieurs sujets. Ceci est une simulation, sans intégration officielle MarIA.
+Un appel, trois sujets à traiter
+Vitres sales, vase cassé, demande de compensation : le résumé devient un dossier structuré dès sa réception.
 
 3
 00:00:19,000 --> 00:00:27,000
-Une priorité expliquée, aucun sujet perdu
-Le dommage est prioritaire. La qualité reste un sujet secondaire distinct. Chaque catégorie indique le signal qui a déclenché la règle.
+Prioriser sans perdre une partie de la demande
+Le dommage passe en premier. La plainte qualité reste visible, avec une explication pour chaque catégorie.
 
 4
 00:00:27,000 --> 00:00:39,000
-Deux sujets, deux actions à examiner
-Dommage : recueillir les faits et les photos. Qualité : évaluer séparément un éventuel passage correctif. Aucune compensation ni assurance n’est accordée.
+Une action précise pour chaque problème
+Dommage : réunir les faits et les photos. Qualité : examiner un passage correctif. Les deux sujets avancent dans le même dossier.
 
 5
 00:00:39,000 --> 00:00:49,000
-Les informations manquantes sont explicites
-La référence de réservation, la date et les photos restent à demander. Une case cochée ne remplace pas la vérification d’un justificatif.
+Demander les bonnes informations dès le départ
+Référence, date, photos : les éléments à recueillir sont visibles avant de préparer la suite.
 
 6
 00:00:49,000 --> 00:01:01,000
-Une réponse préparée, puis adaptée
-Le brouillon est éditable. La responsabilité, la couverture et toute compensation restent à évaluer : le logiciel ne promet aucun résultat.
+Une réponse cohérente, adaptée par l’opérateur
+Le brouillon reprend les deux sujets. L’opérateur l’ajuste au contexte et reste responsable de la réponse.
 
 7
 00:01:01,000 --> 00:01:11,000
-L’opérateur confirme sa revue
-Le message, les lacunes et les références publiques sont examinés. Cette revue locale ne constitue pas une décision automatique d’indemnisation.
+La décision reste entre les mains de l’équipe
+La revue confirme l’examen du message et des informations disponibles. Elle est conservée dans l’historique.
 
 8
 00:01:11,000 --> 00:01:23,000
-Une approbation explicite et traçable
-L’approbation et son horodatage sont enregistrés. Aucun message n’est envoyé. Toute nouvelle modification invalide cette approbation.
+Chaque validation laisse une trace
+La réponse est approuvée explicitement. Si son contenu change, l’approbation est automatiquement à renouveler.
 
 9
 00:01:23,000 --> 00:01:35,000
-Les indicateurs suivent les décisions
-Le dossier est en attente client. Les totaux sont calculés depuis les cas réels de la démo ; les filtres ne modifient pas ces totaux.
+Le suivi se met à jour avec le dossier
+Passer le dossier en attente client actualise les indicateurs. La file de revue reste centrée sur les demandes qui nécessitent une attention particulière.
 
 10
 00:01:35,000 --> 00:01:47,000
-Quand le message est incertain : À vérifier
-La demande de Léa ne permet pas de conclure. Une clarification humaine est demandée, sans inventer de catégorie certaine ni de solution.
+Savoir quand demander une précision
+Quand le message ne permet pas de conclure, CaseFlow indique « À vérifier » et propose la clarification nécessaire.
 
 11
 00:01:47,000 --> 00:01:59,000
-Aucune clôture silencieuse avec des lacunes
-Même après revue et approbation, des informations critiques manquantes imposent un motif de clôture enregistré. Le dossier reste ouvert ici.
+Une clôture doit pouvoir s’expliquer
+Si des informations essentielles manquent, l’opérateur doit motiver sa décision. Le motif reste attaché à l’historique du dossier.
 
 12
-00:01:59,000 --> 00:02:14,000
-Des résultats exécutés, pas supposés
-78 tests réussis dans 5 fichiers, TypeScript strict vérifié. Le moteur est déterministe, sans LLM à l’exécution. Codex a assisté le développement.
-
-13
-00:02:14,000 --> 00:02:28,000
-Valider l’hypothèse avec les opérateurs
-Comparer temps de triage, corrections, informations manquantes et relances évitables. Aucun gain de temps, résultat client ou ROI n’est encore démontré.
-
-14
-00:02:28,000 --> 00:02:40,000
-Prototype indépendant · démonstration automatisée
-Version locale de production, données synthétiques, captures réelles montées et sous-titrées. Revue humaine indépendante et accès du recruteur à confirmer.
+00:01:59,000 --> 00:02:15,000
+Une exécution vérifiable
+78 tests réussis. TypeScript strict. Build de production validé. Une logique métier séparée de l’interface et une installation reproductible.

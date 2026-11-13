@@ -1,13 +1,13 @@
 {
-  "duration_seconds": 160.0,
+  "duration_seconds": 135.0,
   "fps": 24.0,
-  "frames": 3840,
+  "frames": 3240,
   "width": 1280,
   "height": 816,
   "video_codec": "H.264",
   "audio_streams": 0,
   "decode_errors": 0,
-  "bytes": 2764498,
-  "sha256": "8d4c41582b3cf442013682bb6a53847244901d0b38cbf304180297f3a7216dff",
-  "sampled_seconds": [5, 32, 54, 66, 86, 101, 114, 126, 150]
+  "bytes": 1758487,
+  "sha256": "fe313e2910ec3baf1edaff8c53784c2be5ac864f89fde94d691da24951a54e97",
+  "sampled_seconds": [5, 16, 23, 33, 44, 55, 65, 77, 89, 101, 113, 126]
 }

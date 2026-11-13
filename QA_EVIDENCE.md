@@ -101,7 +101,7 @@ Une recherche bornée des motifs de clés usuelles (OpenAI, GitHub, AWS, clés p
 - Persistance vérifiée par JSON et navigateur ; pas de backend, d’identification d’opérateur ou de journal infalsifiable. Un utilisateur peut altérer son propre stockage.
 - Les négations non reconnues, fautes et phrases complexes peuvent encore tromper les règles. Les pièces cochées ne sont pas vérifiées techniquement.
 - Revue humaine du français, des règles et du scénario métier à faire ; aucun responsable MénageSimple n’a validé le prototype. Aucun pilote ni impact réel mesuré.
-- Vidéo silencieuse sous-titrée créée : **160,0 secondes**, décodage intégral sans erreur ; captures réelles montées, pas de revue humaine indépendante. Voir [VIDEO_VERIFICATION.md](./VIDEO_VERIFICATION.md).
+- Vidéo silencieuse sous-titrée créée : **135,0 secondes**, décodage intégral sans erreur ; captures réelles montées, pas de revue humaine indépendante. Voir [VIDEO_VERIFICATION.md](./VIDEO_VERIFICATION.md).
 - Le contrôle hébergé ci-dessous est ciblé ; les autres parcours de cette passe restent des contrôles locaux. Le succès d’un build seul ne prouve pas un déploiement.
 
 ## Déploiement vérifié après publication
